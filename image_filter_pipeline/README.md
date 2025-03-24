@@ -24,7 +24,8 @@ This guide will walk you through setting up and running the project.
 -[ ] **Python "^3.10"**: Ensure that Python is installed on your machine. 
 -[ ] **Poetry**: This project uses [Poetry](https://python-poetry.org/) for dependency management. 
 
-## Setup Instructions
+
+## Setup Instructions 
 
 1. **Install Poetry**
 
