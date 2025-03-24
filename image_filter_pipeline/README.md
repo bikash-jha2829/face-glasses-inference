@@ -41,10 +41,10 @@ This guide will walk you through setting up and running the project.
 
 ## 2. Steps to Run the Project
 ### Prerequisites
-Before running the pipeline, ensure you have the following installed:
 
-* Python "^3.10" (Used: Python 3.10.6) # can leverage pyenv
-* Poetry (for dependency management)
+Before running the pipeline, ensure you have the following installed:
+1. [ ] Poetry (for dependency management)
+2. [ ] Python "^3.10" (Used: Python 3.10.6) # can leverage pyenv
 
 The project’s configuration is centralized in two key files: `config/config.py` and `config/settings.py`. These files are crucial for defining settings like file paths, batch sizes, and other environment-specific variables.
 
