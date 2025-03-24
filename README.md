@@ -22,11 +22,13 @@ Output-Datasets are available here : https://huggingface.co/datasets/jhabikash28
     * [Pipeline Flow](#pipeline-flow)
     * [Key Features](#key-features)
   * [Considerations:](#considerations)
-    * [**Framework Choice: Dask & Ray vs. Spark (Depends of institutional knowledge which one to choose)**](#framework-choice-dask--ray-vs-spark-depends-of-institutional-knowledge-which-one-to-choose-)
-  * [👉 **Takeaway**: After evaluating Spark, Dask, and Ray, we opted for a Python-native solution. While Spark is mature for ETL and structured workloads, its overhead makes it less appealing for deep learning and image processing tasks. Dask provides straightforward parallelization of image operations and PyTorch models, aligning closely with our needs. We complement Dask with **Ray** in scenarios where tasks cannot be efficiently parallelized by Dask alone.](#-takeaway-after-evaluating-spark-dask-and-ray-we-opted-for-a-python-native-solution-while-spark-is-mature-for-etl-and-structured-workloads-its-overhead-makes-it-less-appealing-for-deep-learning-and-image-processing-tasks-dask-provides-straightforward-parallelization-of-image-operations-and-pytorch-models-aligning-closely-with-our-needs-we-complement-dask-with-ray-in-scenarios-where-tasks-cannot-be-efficiently-parallelized-by-dask-alone)
+    * [**Framework Choice:](#framework-choice-)
     * [**Dask on Coiled vs. Ray**](#dask-on-coiled-vs-ray-)
+      * [👉 **Takeaway**:](#-takeaway-)
     * [**Deployment: Kubernetes vs. Cloud Providers**](#deployment-kubernetes-vs-cloud-providers-)
+      * [👉 **Takeaway**:](#-takeaway--1)
     * [**Single-Pass vs. Multiple-Pass Inference (YOLO + CLIP)**](#single-pass-vs-multiple-pass-inference-yolo--clip-)
+      * [👉 **Takeaway**:](#-takeaway--2)
   * [Models consideration](#models-consideration-)
   * [**Custom Model vs. YOLO + CLIP: Trade-offs**](#custom-model-vs-yolo--clip-trade-offs-)
     * [**Why YOLO + CLIP?**](#why-yolo--clip-)
@@ -99,19 +101,22 @@ if those persons are wearing regular eyeglasses (as opposed to sunglasses or no 
 
 ---
 
-### **Framework Choice: Dask & Ray vs. Spark (Depends of institutional knowledge which one to choose)**  
+### **Framework Choice: 
+_Dask & Ray vs. Spark (Depends of institutional knowledge which one to choose)**_  
 - **Spark**: Excellent for structured and SQL-like data processing but not well-suited for image-based workflows (YOLO, CLIP, OpenCV), primarily due to its dataframe-centric approach and limited native GPU support.
   
 - **Dask**: Naturally handles multi-dimensional data (like images and tensors) and integrates seamlessly with Python libraries such as NumPy, OpenCV, and Pillow, making it ideal for our inference pipeline.
 
-👉 **Takeaway**: After evaluating Spark, Dask, and Ray, we opted for a Python-native solution. While Spark is mature for ETL and structured workloads, its overhead makes it less appealing for deep learning and image processing tasks. Dask provides straightforward parallelization of image operations and PyTorch models, aligning closely with our needs. We complement Dask with **Ray** in scenarios where tasks cannot be efficiently parallelized by Dask alone.
+👉 **Takeaway**: 
+ After evaluating Spark, Dask, and Ray, we opted for a Python-native solution. While Spark is mature for ETL and structured workloads, its overhead makes it less appealing for deep learning and image processing tasks. Dask provides straightforward parallelization of image operations and PyTorch models, aligning closely with our needs. We complement Dask with **Ray** in scenarios where tasks cannot be efficiently parallelized by Dask alone.
 ---
 
 ### **Dask on Coiled vs. Ray**  
 - **Coiled** simplifies Dask deployments but **can be expensive** for high-memory workloads.  
 - **Ray** offers **better cost control**, but requires **more setup and tuning**.  
 
-👉 **Takeaway**: If cost is a concern and **you already know how to run Dask on Kubernetes**, **skip Coiled** and manage your own clusters.  
+#### 👉 **Takeaway**: 
+If cost is a concern and **you already know how to run Dask on Kubernetes**, **skip Coiled** and manage your own clusters.  
 
 ---
 
@@ -120,7 +125,8 @@ if those persons are wearing regular eyeglasses (as opposed to sunglasses or no 
 - **Crusoe Cloud** → **Cheaper inference** but **high egress costs**; limited storage.  
 - **GCP/AWS** → Easier to manage, but **can get costly with bandwidth/storage fees**.  
 
-👉 **Takeaway**: **Kubernetes + GPUs** is the best balance if you have expertise. Otherwise, **managed cloud services may be worth the trade-off.**  
+#### 👉 **Takeaway**: 
+**Kubernetes + GPUs** is the best balance if you have expertise. Otherwise, **managed cloud services may be worth the trade-off.**  
 
 ---
 
@@ -143,8 +149,8 @@ We opted for the simpler single-pass design to minimize data movement and I/O. T
 but the cost was minor compared to the simplicity gained. Moreover, combining the models in one pass allowed us to take advantage of 
 pipeline parallelism on each worker (the image resides in memory and can flow through both models sequentially without extra communication).  
 
-👉 **Takeaway**: **Single-pass wins here for my assignment**—it avoids unnecessary reprocessing and keeps things lean. **Push down predicates**.
-                  **But in production I might chose Multiple-Pass**
+#### 👉 **Takeaway**: 
+**Single-pass wins here for my assignment**—it avoids unnecessary reprocessing and keeps things lean. **Push down predicates**.**But in production I might chose Multiple-Pass**
 
 
 ## Models consideration 
@@ -166,7 +172,7 @@ While this works, a **single model** that detects faces *and* classifies glasses
 ✅ **Faster Inference** – Detect faces + classify glasses in **one pass**, reducing overhead.  
 ✅ **Optimized for Our Data** – A trained model would be **more accurate** than zero-shot methods.  
 
-### **Final Take**  
+#### 👉 **Final Takeaway**:  
 For now, **YOLO + CLIP is our best option**—it provides a **workable, flexible solution** without needing costly custom training. However, if inference speed becomes a bottleneck, **a future custom model could streamline the process**. 🚀
 
 
