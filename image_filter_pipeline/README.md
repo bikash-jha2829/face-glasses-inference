@@ -179,5 +179,15 @@ Once it is produced you can produce FAISS Index as well leverage notebook code a
 Researcher can leverage Parquet file to filter data (refer `notebooks/search_query_dask_sql.ipynb`)
 
 
+## Resource Usage in the Latest Dask Pipeline Run
 
+During the last run of the Dask pipeline, system resource usage (CPU and memory) was monitored. The following configuration was used:
 
+- **Ray Object Store Memory**: `RAY_OBJECT_STORE_MEMORY = 2 * 1024**3` (2GB)
+- **Dask Memory Limit**: `DASK_MEMORY_LIMIT = "8GB"` (per Dask worker)
+- **Dask Worker Threads**: `DASK_WORKER_THREADS = 2`
+- **Number of Dask Workers**: `DASK_NUM_WORKERS = 4`
+
+Additionally, the pipeline ran on a Mac with an **MPU** (Mac Processing Unit) for hardware acceleration.
+
+![image](https://github.com/user-attachments/assets/95333edb-2bbd-439b-be8b-1494eb475221)
