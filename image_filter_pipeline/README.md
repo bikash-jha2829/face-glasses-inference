@@ -19,12 +19,12 @@ This guide will walk you through setting up and running the project.
 - 🔍  **Sample search**: refer notebooks containing example of search using dask and dask sql
 
 
-## Prerequisites
+## Prerequisites 
 
--[ ] **Python "^3.10"**: Ensure that Python is installed on your machine. 
--[ ] **Poetry**: This project uses [Poetry](https://python-poetry.org/) for dependency management. 
+1. [ ] **Python "^3.10"**: Ensure that Python is installed on your machine. 
 
-
+2. [ ] **Poetry**: This project uses [Poetry](https://python-poetry.org/) for dependency management. 
+ 
 ## Setup Instructions 
 
 1. **Install Poetry**
